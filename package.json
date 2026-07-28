@@ -1,0 +1,9 @@
+{
+  "name": "crescent-heights-academy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Crescent Heights Academy demo site + WhatsApp-to-website notice & fee voucher backend.",
+  "engines": {
+    "node": ">=18"
+  }
+}

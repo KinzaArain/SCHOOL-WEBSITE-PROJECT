@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crescent Heights Academy — Nursery to A-Levels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#101B33; --navy-2:#182746; --paper:#F4F5F0; --paper-2:#EAEBE4;
+    --gold:#B8923B; --gold-light:#D9B968; --maroon:#7A2331; --ink:#1C1E22; --slate:#5B6472;
+    --line: rgba(16,27,51,0.10); --radius: 4px;
+    --sky:#CFE0E6; --grass:#8FAE7C; --skin:#EFC9A3;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper); color:var(--ink); font-family:'Work Sans', sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  h1,h2,h3,h4{font-family:'Fraunces', serif; font-weight:600; line-height:1.15; letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  .eyebrow{display:inline-flex; align-items:center; gap:10px; font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-light); margin-bottom:18px;}
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--gold-light);}
+  .eyebrow.dark{color:var(--maroon);}
+  .eyebrow.dark::before{background:var(--maroon);}
+  section{padding:100px 0; position:relative;}
+  @media (max-width:720px){ section{padding:64px 0;} .wrap{padding:0 20px;} }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;} }
+
+  .wave-divider{line-height:0;}
+  .wave-divider svg{width:100%; height:60px; display:block;}
+  @media (max-width:720px){ .wave-divider svg{height:34px;} }
+
+  /* NAV */
+  header{position:sticky; top:0; z-index:100; background:rgba(244,245,240,0.92); backdrop-filter:blur(8px); border-bottom:1px solid transparent; transition:border-color .3s ease, box-shadow .3s ease;}
+  header.scrolled{ border-color:var(--line); box-shadow:0 4px 20px rgba(16,27,51,0.06); }
+  nav{display:flex; align-items:center; justify-content:space-between; padding:16px 0;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-name{font-family:'Fraunces', serif; font-weight:600; font-size:17px; line-height:1.2;}
+  .brand-name span{display:block; font-family:'IBM Plex Mono', monospace; font-weight:500; font-size:10px; letter-spacing:0.1em; color:var(--slate); text-transform:uppercase;}
+  .nav-links{display:flex; align-items:center; gap:30px;}
+  .nav-links a{font-size:14.5px; font-weight:500; color:var(--ink); position:relative; padding:4px 0;}
+  .nav-links a::after{content:""; position:absolute; left:0; bottom:0; height:1.5px; width:0; background:var(--maroon); transition:width .25s ease;}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{background:var(--navy); color:var(--paper) !important; font-weight:600; padding:10px 20px; border-radius:var(--radius); font-size:14px; transition:background .25s ease, transform .2s ease;}
+  .nav-cta:hover{background:var(--maroon); transform:translateY(-1px);}
+  .burger{display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px;}
+  .burger span{width:24px; height:2px; background:var(--navy); display:block;}
+  @media (max-width:960px){
+    .nav-links{position:fixed; inset:60px 0 auto 0; background:var(--paper); flex-direction:column; align-items:flex-start; gap:0; padding:8px 20px 20px; border-bottom:1px solid var(--line); transform:translateY(-8px); opacity:0; pointer-events:none; transition:all .25s ease; max-height:80vh; overflow-y:auto;}
+    .nav-links.open{transform:translateY(0); opacity:1; pointer-events:auto;}
+    .nav-links a{padding:14px 0; width:100%; border-bottom:1px solid var(--line);}
+    .nav-links .nav-cta{margin-top:14px; text-align:center; border-bottom:none;}
+    .burger{display:flex;}
+  }
+
+  /* UTILITY BAR - voucher search */
+  .utility-bar{background:#fff; border-bottom:1px solid var(--line); position:relative; z-index:90;}
+  .voucher-inner{display:flex; align-items:center; justify-content:space-between; gap:18px; padding:13px 0; flex-wrap:wrap;}
+  .voucher-label{display:flex; align-items:center; gap:9px; font-size:13.5px; font-weight:600; color:var(--navy); white-space:nowrap;}
+  .voucher-label svg{width:19px; height:19px; color:var(--maroon); flex-shrink:0;}
+  .voucher-form{display:flex; gap:10px; flex:1; max-width:460px; min-width:240px;}
+  .voucher-form input{flex:1; padding:10px 14px; border:1px solid var(--line); border-radius:4px; font-family:'Work Sans',sans-serif; font-size:13.5px; background:var(--paper); min-width:0;}
+  .btn-sm{padding:10px 20px; font-size:13.5px; white-space:nowrap; cursor:pointer;}
+  .voucher-hint{font-size:11px; color:var(--slate); margin-top:6px;}
+  @media (max-width:760px){ .voucher-inner{flex-direction:column; align-items:stretch;} .voucher-form{max-width:none;} }
+  .voucher-result-wrap{padding:0 0 22px; display:none;}
+  .voucher-result-wrap.show{display:block;}
+  .voucher-card{background:var(--paper-2); border:1px solid var(--line); border-radius:8px; padding:20px 22px; display:flex; flex-wrap:wrap; gap:22px; align-items:flex-start; justify-content:space-between;}
+  .voucher-preview{background:#fff; border:1px solid var(--line); border-radius:6px; padding:6px; box-shadow:0 10px 24px rgba(16,27,51,0.08); max-width:100%; overflow:auto; max-height:520px;}
+  .voucher-preview canvas{display:block; max-width:100%; height:auto;}
+  .voucher-actions{display:flex; flex-direction:column; gap:12px; align-items:flex-start; min-width:200px;}
+  .voucher-found-label{font-size:13.5px; color:var(--navy); font-weight:600;}
+  .voucher-pages-note{font-weight:500; color:var(--slate); font-family:'IBM Plex Mono',monospace; font-size:11.5px;}
+  .voucher-not-found{padding:16px 20px; font-size:14px; color:var(--slate); background:var(--paper-2); border-radius:8px; border:1px solid var(--line);}
+  .voucher-demo-note{font-size:11px; color:var(--slate); margin-top:6px;}
+
+  /* HERO */
+  .hero{background:radial-gradient(1100px 500px at 85% -10%, rgba(184,146,59,0.16), transparent 60%), linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%); color:var(--paper); padding:80px 0 60px; overflow:hidden;}
+  .hero-dotgrid{position:absolute; inset:0; background-image:radial-gradient(rgba(244,245,240,0.09) 1px, transparent 1px); background-size:24px 24px; mask-image:radial-gradient(circle at 30% 30%, black, transparent 75%); pointer-events:none;}
+  .hero::after{content:""; position:absolute; right:-120px; top:-120px; width:420px; height:420px; border:1px solid rgba(217,185,104,0.18); border-radius:50%; pointer-events:none;}
+  .hero-grid{display:grid; grid-template-columns:1.05fr 0.95fr; gap:40px; align-items:center; position:relative; z-index:1;}
+  @media (max-width:960px){ .hero-grid{grid-template-columns:1fr;} }
+  .hero-text{max-width:600px;}
+  .hero-text > *{animation:fadeUp .8s ease both;}
+  .hero-text .eyebrow{animation-delay:.05s;}
+  .hero-text h1{animation-delay:.15s;}
+  .hero-text p.lead{animation-delay:.28s;}
+  .hero-text .btn-row{animation-delay:.4s;}
+  .hero-text .stat-row{animation-delay:.5s;}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);}}
+  .hero h1{font-size:clamp(34px, 4.6vw, 54px); color:#fff; margin-bottom:20px;}
+  .hero p.lead{font-size:17px; color:rgba(244,245,240,0.78); max-width:500px; margin-bottom:32px;}
+  .btn-row{display:flex; flex-wrap:wrap; gap:14px; margin-bottom:52px;}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:14px 26px; border-radius:var(--radius); font-weight:600; font-size:14.5px; transition:transform .2s ease, background .2s ease, border-color .2s ease; border:1px solid transparent;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--gold); color:var(--navy);}
+  .btn-primary:hover{background:var(--gold-light);}
+  .btn-ghost{border-color:rgba(244,245,240,0.35); color:var(--paper);}
+  .btn-ghost:hover{border-color:var(--gold-light); background:rgba(217,185,104,0.08);}
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:0; border-top:1px solid rgba(244,245,240,0.16); padding-top:30px; max-width:560px;}
+  .stat{padding-right:14px;}
+  .stat .num{font-family:'IBM Plex Mono', monospace; font-size:clamp(20px,2.4vw,30px); font-weight:600; color:var(--gold-light);}
+  .stat .label{font-size:11.5px; color:rgba(244,245,240,0.65); margin-top:6px; letter-spacing:0.02em;}
+  @media (max-width:720px){ .stat-row{grid-template-columns:repeat(2,1fr); row-gap:24px;} }
+
+  .hero-illustration{position:relative; display:flex; align-items:center; justify-content:center;}
+  .float-shape{position:absolute; border-radius:50%; border:1px solid rgba(217,185,104,0.35); animation:floaty 6s ease-in-out infinite;}
+  .float-shape.s1{width:90px; height:90px; top:2%; left:0%; animation-delay:0s;}
+  .float-shape.s2{width:50px; height:50px; bottom:6%; right:0%; border-color:rgba(122,35,49,0.35); animation-delay:1.2s;}
+  .float-shape.s3{width:26px; height:26px; top:46%; right:-4%; background:rgba(217,185,104,0.25); border:none; animation-delay:.6s;}
+  @keyframes floaty{0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);}}
+  .hero-photo-frame{position:relative; z-index:2; border-radius:16px; overflow:hidden; border:4px solid rgba(217,185,104,0.4); box-shadow:0 30px 60px rgba(0,0,0,0.35); max-width:400px; aspect-ratio:4/5; margin:0 auto;}
+  .hero-photo-frame img{width:100%; height:100%; object-fit:cover; display:block;}
+  .hero-photo-badge{position:absolute; bottom:14px; left:14px; right:14px; background:rgba(16,27,51,0.82); backdrop-filter:blur(4px); color:#fff; padding:10px 14px; border-radius:6px; font-size:11.5px; font-family:'IBM Plex Mono',monospace; display:flex; align-items:center; gap:8px;}
+  @media (max-width:960px){ .hero-illustration{margin-top:20px;} .hero-photo-frame{max-width:320px;} }
+
+  .reveal{opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+
+  /* ABOUT */
+  .about-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:70px; align-items:center;}
+  @media (max-width:860px){ .about-grid{grid-template-columns:1fr;} }
+  .about-grid h2{font-size:clamp(26px,3.4vw,38px); max-width:520px; margin-bottom:22px;}
+  .about-grid p{color:var(--slate); font-size:16px; max-width:520px; margin-bottom:26px;}
+  .fact-list{display:grid; gap:14px;}
+  .fact-list li{display:flex; justify-content:space-between; padding:14px 0; border-bottom:1px solid var(--line); font-size:14.5px;}
+  .fact-list li b{font-weight:600; color:var(--navy);}
+  .fact-list li span{color:var(--slate);}
+  .campus-visual{position:relative;}
+  .campus-panel{background:var(--navy); border-radius:8px; padding:0; overflow:hidden; position:relative; box-shadow:0 24px 50px rgba(16,27,51,0.18);}
+  .campus-panel .building-svg{width:100%; display:block;}
+  .campus-panel .panel-caption{display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-top:1px solid rgba(217,185,104,0.2);}
+  .panel-caption .loc{font-size:13px; color:rgba(244,245,240,0.75);}
+  .panel-caption .loc b{color:#fff; display:block; font-family:'Fraunces',serif; font-size:15px; margin-bottom:2px;}
+  .panel-crest{width:38px; height:38px;}
+  .campus-inset-photo{position:absolute; width:92px; height:92px; border-radius:50%; overflow:hidden; border:4px solid var(--paper); box-shadow:0 10px 24px rgba(0,0,0,0.25); bottom:66px; left:-18px; z-index:5;}
+  .campus-inset-photo img{width:100%; height:100%; object-fit:cover;}
+  @media (max-width:860px){ .campus-inset-photo{left:16px; bottom:-16px;} }
+
+  /* PATHWAY */
+  .pathway-head{max-width:600px; margin-bottom:60px;}
+  .pathway-head h2{font-size:clamp(26px,3.4vw,38px);}
+  .pathway-head p{color:var(--slate); font-size:15.5px; margin-top:14px;}
+  .timeline{position:relative;}
+  .timeline-line{position:absolute; top:23px; left:0; height:2px; width:100%; background:var(--line);}
+  .timeline-line-fill{position:absolute; top:0; left:0; height:100%; width:100%; background:var(--gold); transform:scaleX(0); transform-origin:left; transition:transform 1.1s cubic-bezier(.4,0,.2,1);}
+  .timeline-line-fill.in-view{transform:scaleX(1);}
+  .timeline-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:28px; position:relative;}
+  @media (max-width:860px){ .timeline-grid{grid-template-columns:1fr; gap:0;} .timeline-line{display:none;} }
+  .stage{position:relative; padding-top:52px;}
+  @media (max-width:860px){ .stage{padding:0 0 0 40px; margin-bottom:32px; border-left:2px solid var(--line);} .stage:last-child{margin-bottom:0;} }
+  .stage-num{position:absolute; top:0; left:0; width:46px; height:46px; border-radius:50%; background:var(--paper); border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:14px; color:var(--navy);}
+  @media (max-width:860px){ .stage-num{left:-24px; width:44px; height:44px;} }
+  .stage-card{background:#fff; border:1px solid var(--line); border-radius:6px; padding:26px 22px; transition:transform .25s ease, box-shadow .25s ease;}
+  .stage-card:hover{transform:translateY(-5px); box-shadow:0 16px 32px rgba(16,27,51,0.08);}
+  .stage-card .age{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--maroon); letter-spacing:0.05em; margin-bottom:8px; display:block;}
+  .stage-card h3{font-size:19px; margin-bottom:10px;}
+  .stage-card p{font-size:14px; color:var(--slate);}
+
+  /* GALLERY */
+  .gallery-grid{display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:200px; gap:18px;}
+  .gallery-card{position:relative; border-radius:10px; overflow:hidden; box-shadow:0 14px 30px rgba(16,27,51,0.08); transition:transform .3s ease, box-shadow .3s ease;}
+  .gallery-card:hover{transform:translateY(-6px) rotate(-0.3deg); box-shadow:0 22px 40px rgba(16,27,51,0.16);}
+  .gallery-card img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease;}
+  .gallery-card:hover img{transform:scale(1.06);}
+  .gallery-card .gc-label{position:absolute; left:0; right:0; bottom:0; padding:16px 18px 14px; background:linear-gradient(180deg, transparent, rgba(16,27,51,0.8)); color:#fff; font-size:13.5px; font-weight:600;}
+  .gallery-card .gc-label span{display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-light); margin-bottom:3px;}
+  .gallery-card.big{grid-column:span 2; grid-row:span 2;}
+  @media (max-width:860px){ .gallery-grid{grid-template-columns:repeat(2,1fr); grid-auto-rows:170px;} .gallery-card.big{grid-column:span 2; grid-row:span 1;} }
+  @media (max-width:520px){ .gallery-grid{grid-template-columns:1fr; grid-auto-rows:200px;} .gallery-card.big{grid-column:span 1;} }
+
+  /* NOTICE BOARD */
+  .notice-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:44px;}
+  @media (max-width:860px){ .notice-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .notice-grid{grid-template-columns:1fr;} }
+  .notice-card{background:#fff; border:1px solid var(--line); border-radius:8px; padding:24px 20px 20px; position:relative; box-shadow:0 10px 24px rgba(16,27,51,0.06); transition:transform .25s ease, box-shadow .25s ease;}
+  .notice-card:nth-child(3n+1){transform:rotate(-0.6deg);}
+  .notice-card:nth-child(3n+2){transform:rotate(0.5deg);}
+  .notice-card:nth-child(3n+3){transform:rotate(-0.3deg);}
+  .notice-card:hover{transform:translateY(-5px) rotate(0deg); box-shadow:0 18px 34px rgba(16,27,51,0.13);}
+  .notice-pin{width:13px; height:13px; border-radius:50%; position:absolute; top:-7px; left:50%; transform:translateX(-50%); box-shadow:0 2px 5px rgba(0,0,0,0.3);}
+  .notice-tag{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; padding:4px 10px; border-radius:20px; margin-bottom:12px;}
+  .notice-tag.urgent{background:#F5E4E6; color:var(--maroon);}
+  .notice-tag.circular{background:#F7EFDD; color:#8A6A22;}
+  .notice-tag.event{background:#E3EDE3; color:#3F6B4A;}
+  .notice-tag.holiday{background:#E4EAF3; color:#2C4270;}
+  .notice-tag.academic{background:#EDE4F0; color:#6A3F7A;}
+  .notice-card h4{font-size:16px; margin-bottom:8px;}
+  .notice-card p{font-size:13.5px; color:var(--slate); margin-bottom:14px;}
+  .notice-meta{font-size:11px; color:#9098A3; font-family:'IBM Plex Mono',monospace;}
+
+  /* CAMPUS LIFE facilities */
+  .campus-life{background:var(--navy-2); color:var(--paper);}
+  .campus-life .pathway-head h2{color:#fff;}
+  .campus-life .pathway-head p{color:rgba(244,245,240,0.7);}
+  .feature-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:rgba(244,245,240,0.1); border-radius:8px; overflow:hidden;}
+  @media (max-width:860px){ .feature-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .feature-grid{grid-template-columns:1fr;} }
+  .feature{background:var(--navy-2); padding:34px 26px; transition:background .25s ease;}
+  .feature:hover{background:#1F3157;}
+  .feature svg{width:26px; height:26px; color:var(--gold-light); margin-bottom:18px;}
+  .feature h4{font-size:16.5px; color:#fff; margin-bottom:8px; font-weight:600; font-family:'Work Sans', sans-serif;}
+  .feature p{font-size:13.5px; color:rgba(244,245,240,0.65);}
+
+  /* TESTIMONIALS */
+  .testimonial-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
+  @media (max-width:860px){ .testimonial-grid{grid-template-columns:1fr;} }
+  .t-card{background:#fff; border:1px solid var(--line); border-radius:8px; padding:30px 26px;}
+  .t-quote{font-family:'Fraunces',serif; font-style:italic; font-size:16.5px; color:var(--ink); margin-bottom:22px; line-height:1.5;}
+  .t-person{display:flex; align-items:center; gap:12px;}
+  .t-person .avatar{width:44px; height:44px; border-radius:50%; overflow:hidden; flex-shrink:0; background:var(--paper-2);}
+  .t-person .who b{display:block; font-size:14px;}
+  .t-person .who span{font-size:12.5px; color:var(--slate);}
+
+  /* NEWS */
+  .news-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
+  @media (max-width:860px){ .news-grid{grid-template-columns:1fr;} }
+  .news-card{background:#fff; border:1px solid var(--line); border-radius:6px; padding:28px; display:flex; flex-direction:column; height:100%;}
+  .news-meta{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; font-size:12px;}
+  .tag{background:var(--paper-2); color:var(--navy); padding:4px 10px; border-radius:20px; font-weight:600; font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em;}
+  .news-date{color:var(--slate); font-family:'IBM Plex Mono', monospace;}
+  .news-card h3{font-size:18px; margin-bottom:10px;}
+  .news-card p{font-size:14px; color:var(--slate); margin-bottom:16px; flex-grow:1;}
+  .news-card .read{font-size:13.5px; font-weight:600; color:var(--maroon); display:inline-flex; align-items:center; gap:6px;}
+
+  /* ADMISSIONS */
+  .admissions{background:linear-gradient(120deg, var(--maroon) 0%, #5C1A24 100%); color:#fff;}
+  .adm-grid{display:grid; grid-template-columns:1fr 0.9fr; gap:60px; align-items:center;}
+  @media (max-width:900px){ .adm-grid{grid-template-columns:1fr;} }
+  .adm-grid h2{color:#fff; font-size:clamp(26px,3.4vw,36px); margin-bottom:16px;}
+  .adm-grid p{color:rgba(255,255,255,0.8); font-size:15.5px; max-width:460px;}
+  .form-card{background:#fff; border-radius:8px; padding:32px; color:var(--ink);}
+  .form-card h3{font-size:18px; margin-bottom:20px; color:var(--navy);}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:12.5px; font-weight:600; color:var(--slate); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.04em;}
+  .field input, .field select{width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:4px; font-family:'Work Sans', sans-serif; font-size:14.5px; background:var(--paper);}
+  .form-card .btn-primary{width:100%; justify-content:center; border:none; cursor:pointer; margin-top:6px;}
+  .form-note{font-size:12.5px; color:var(--slate); margin-top:12px; text-align:center;}
+  .form-success{display:none; text-align:center; padding:30px 10px;}
+  .form-success.show{display:block;}
+  .form-success svg{width:40px; height:40px; color:var(--maroon); margin:0 auto 14px;}
+  .form-success h3{color:var(--navy); margin-bottom:8px;}
+  .form-success p{color:var(--slate); font-size:14px;}
+
+  /* FOOTER */
+  footer{background:var(--navy); color:rgba(244,245,240,0.75); padding:80px 0 0;}
+  .footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; padding-bottom:56px; border-bottom:1px solid rgba(244,245,240,0.12);}
+  @media (max-width:860px){ .footer-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:560px){ .footer-grid{grid-template-columns:1fr;} }
+  .footer-grid h5{color:#fff; font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:18px; font-weight:600;}
+  .footer-grid ul li{margin-bottom:10px; font-size:14px;}
+  .footer-grid ul li a:hover{color:var(--gold-light);}
+  .foot-brand p{font-size:14px; max-width:280px; margin:14px 0 20px; color:rgba(244,245,240,0.6);}
+  .social-row{display:flex; gap:12px;}
+  .social-row a{width:34px; height:34px; border:1px solid rgba(244,245,240,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:border-color .2s ease, color .2s ease;}
+  .social-row a:hover{border-color:var(--gold-light); color:var(--gold-light);}
+  .social-row svg{width:15px; height:15px;}
+  .bottom-bar{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding:24px 0; font-size:12.5px; color:rgba(244,245,240,0.5);}
+  .bottom-bar a:hover{color:var(--gold-light);}
+  .bottom-links{display:flex; gap:20px;}
+
+  .whatsapp-float{position:fixed; bottom:20px; left:20px; z-index:200; width:52px; height:52px; border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px rgba(0,0,0,0.25); transition:transform .2s ease;}
+  .whatsapp-float:hover{transform:scale(1.08);}
+  .whatsapp-float svg{width:26px; height:26px; color:#fff;}
+  @media (max-width:640px){ .whatsapp-float{width:46px; height:46px; bottom:16px; left:16px;} }
+</style>
+</head>
+<body>
+
+<header id="site-header">
+  <nav class="wrap">
+    <div class="brand">
+      <svg width="36" height="36" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M30 3 L54 12 V30 C54 44 44 53 30 57 C16 53 6 44 6 30 V12 Z" fill="#101B33" stroke="#D9B968" stroke-width="1.5"/>
+        <text x="30" y="37" font-family="Fraunces, serif" font-size="20" font-weight="700" fill="#D9B968" text-anchor="middle">CH</text>
+      </svg>
+      <div class="brand-name">Crescent Heights<span>Academy · Est. 1994</span></div>
+    </div>
+    <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#academics">Academics</a>
+      <a href="#notices">Notice Board</a>
+      <a href="#gallery">Campus Life</a>
+      <a href="#admissions" class="nav-cta">Book a Tour</a>
+    </div>
+  </nav>
+</header>
+
+<div class="utility-bar" id="voucherBar">
+  <div class="wrap voucher-inner">
+    <div class="voucher-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h9l3 3v15H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      <span>Find your child's fee challan</span>
+    </div>
+    <form class="voucher-form" id="voucherForm">
+      <input type="text" id="voucherInput" placeholder="Child's full name, e.g. Kinza Shabbir Arain" autocomplete="off">
+      <button type="submit" class="btn btn-primary btn-sm">Find Challan</button>
+    </form>
+  </div>
+  <div class="voucher-result-wrap wrap" id="voucherResultWrap"></div>
+</div>
+
+<section class="hero">
+  <div class="hero-dotgrid"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <div class="eyebrow">Est. 1994 · Karachi, Pakistan</div>
+      <h1>Where curiosity becomes character.</h1>
+      <p class="lead">A K-12 campus network built on rigorous academics, real mentorship, and the kind of community that stays with a student long after graduation.</p>
+      <div class="btn-row">
+        <a href="#admissions" class="btn btn-primary">Book a Campus Tour</a>
+        <a href="#academics" class="btn btn-ghost">Explore Academics</a>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><div class="num"><span data-count="30">0</span>+</div><div class="label">Years of Teaching</div></div>
+        <div class="stat"><div class="num"><span data-count="3">0</span></div><div class="label">Campuses</div></div>
+        <div class="stat"><div class="num">1:<span data-count="15">0</span></div><div class="label">Teacher–Student Ratio</div></div>
+        <div class="stat"><div class="num"><span data-count="100">0</span>%</div><div class="label">Board Pass Rate · 2025</div></div>
+      </div>
+    </div>
+    <div class="hero-illustration">
+      <div class="float-shape s1"></div>
+      <div class="float-shape s2"></div>
+      <div class="float-shape s3"></div>
+      <div class="hero-photo-frame">
+        <img src="https://images.pexels.com/photos/35128464/pexels-photo-35128464.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cheerful students in school uniform laughing together outdoors" loading="lazy">
+        <div class="hero-photo-badge">
+          <svg width="16" height="16" viewBox="0 0 60 60" fill="none"><path d="M30 3 L54 12 V30 C54 44 44 53 30 57 C16 53 6 44 6 30 V12 Z" fill="none" stroke="#D9B968" stroke-width="2.5"/></svg>
+          Crescent Heights, Karachi Campus
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="wave-divider" style="background:var(--navy-2);">
+  <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,50 L1440,100 L0,100 Z" style="fill:var(--paper);"/></svg>
+</div>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="reveal">
+      <div class="eyebrow dark">About the Academy</div>
+      <h2>A campus that treats every stage of childhood as its own discipline.</h2>
+      <p>Crescent Heights was founded in 1994 on a simple premise: a seven-year-old and a seventeen-year-old learn in entirely different ways, and a school should be built around that fact rather than one teaching style stretched across thirteen grades. Each division runs its own rhythm, its own facilities, and its own specialist faculty — while sharing a single campus culture of curiosity, discipline and care.</p>
+      <ul class="fact-list">
+        <li><b>Curriculum</b><span>Cambridge International &amp; National Board</span></li>
+        <li><b>Language of instruction</b><span>English, with Urdu &amp; Islamiyat</span></li>
+        <li><b>Co-curricular hours</b><span>5 per week, every grade</span></li>
+      </ul>
+    </div>
+    <div class="campus-visual reveal">
+      <div class="campus-panel">
+        <svg class="building-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="280" fill="#101B33"/>
+          <circle cx="340" cy="46" r="30" fill="#D9B968" opacity="0.85"/>
+          <rect x="0" y="210" width="400" height="70" fill="#0C1428"/>
+          <rect x="40" y="90" width="320" height="120" fill="#182746"/>
+          <path d="M40 90 L200 34 L360 90 Z" fill="#0D1730"/>
+          <rect x="192" y="6" width="8" height="30" fill="#D9B968"/>
+          <path d="M200 8 L232 16 L200 24 Z" fill="#7A2331"/>
+          <rect x="185" y="150" width="30" height="60" rx="2" fill="#0C1428" stroke="#D9B968" stroke-width="1.5"/>
+          <g fill="#CFE0E6" opacity="0.9">
+            <rect x="65" y="112" width="26" height="34" rx="2"/><rect x="105" y="112" width="26" height="34" rx="2"/><rect x="145" y="112" width="26" height="34" rx="2"/>
+            <rect x="229" y="112" width="26" height="34" rx="2"/><rect x="269" y="112" width="26" height="34" rx="2"/><rect x="309" y="112" width="26" height="34" rx="2"/>
+            <rect x="65" y="160" width="26" height="34" rx="2"/><rect x="105" y="160" width="26" height="34" rx="2"/>
+            <rect x="269" y="160" width="26" height="34" rx="2"/><rect x="309" y="160" width="26" height="34" rx="2"/>
+          </g>
+          <rect x="0" y="205" width="400" height="6" fill="#D9B968" opacity="0.4"/>
+          <path d="M0 234 Q30 224 60 234 T120 234 T180 234 T240 234 T300 234 T360 234 T420 234" stroke="#8FAE7C" stroke-width="14" fill="none" opacity="0.35"/>
+        </svg>
+        <div class="panel-caption">
+          <div class="loc"><b>Karachi Campus</b>Clifton Block 5</div>
+          <svg class="panel-crest" viewBox="0 0 60 60" fill="none">
+            <path d="M30 3 L54 12 V30 C54 44 44 53 30 57 C16 53 6 44 6 30 V12 Z" fill="none" stroke="#D9B968" stroke-width="1.5"/>
+            <text x="30" y="37" font-family="Fraunces, serif" font-size="18" font-weight="700" fill="#D9B968" text-anchor="middle">CH</text>
+          </svg>
+        </div>
+      </div>
+      <div class="campus-inset-photo">
+        <img src="https://images.pexels.com/photos/31958489/pexels-photo-31958489.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Students in school uniform posing together" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="academics" style="background:var(--paper-2);">
+  <div class="wrap">
+    <div class="pathway-head reveal">
+      <div class="eyebrow dark">The Academic Pathway</div>
+      <h2>Four stages, one continuous foundation.</h2>
+    </div>
+    <div class="timeline">
+      <div class="timeline-line"><div class="timeline-line-fill reveal" id="timelineFill"></div></div>
+      <div class="timeline-grid">
+        <div class="stage reveal"><div class="stage-num">01</div><div class="stage-card"><span class="age">AGES 3–5</span><h3>Early Years</h3><p>Play-based literacy, numeracy and motor-skill foundations in small, closely supervised groups.</p></div></div>
+        <div class="stage reveal"><div class="stage-num">02</div><div class="stage-card"><span class="age">AGES 6–11</span><h3>Primary</h3><p>Structured core subjects with hands-on science, creative arts, and the start of a second language.</p></div></div>
+        <div class="stage reveal"><div class="stage-num">03</div><div class="stage-card"><span class="age">AGES 12–16</span><h3>Secondary</h3><p>Matriculation and O-Level tracks, subject specialisation, and the first formal board examinations.</p></div></div>
+        <div class="stage reveal"><div class="stage-num">04</div><div class="stage-card"><span class="age">AGES 16–18</span><h3>Intermediate</h3><p>HSSC and A-Level pathways with university counselling and electives aligned to career goals.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery" style="background:var(--paper);">
+  <div class="wrap">
+    <div class="pathway-head reveal">
+      <div class="eyebrow dark">Life at Crescent Heights</div>
+      <h2>A day in the life of our students.</h2>
+      <p>From morning assembly to the last bell, our campuses are built around hands-on learning and genuine curiosity.</p>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-card big">
+        <img src="https://images.pexels.com/photos/31958488/pexels-photo-31958488.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Children in school uniform in a classroom" loading="lazy">
+        <div class="gc-label"><span>Classroom</span>Interactive learning, every grade</div>
+      </div>
+      <div class="gallery-card">
+        <img src="https://images.pexels.com/photos/35128449/pexels-photo-35128449.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Students in uniform playing on the playground" loading="lazy">
+        <div class="gc-label"><span>Sports &amp; Play</span>Football, athletics &amp; recess</div>
+      </div>
+      <div class="gallery-card">
+        <img src="https://images.pexels.com/photos/8471835/pexels-photo-8471835.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Students doing a science experiment in the lab" loading="lazy">
+        <div class="gc-label"><span>Science Lab</span>Hands-on STEM from Grade 6</div>
+      </div>
+      <div class="gallery-card">
+        <img src="https://images.pexels.com/photos/10638213/pexels-photo-10638213.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Students in school uniform reading together in the library" loading="lazy">
+        <div class="gc-label"><span>Library</span>12,000-volume collection</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="notices" style="background:var(--paper-2);">
+  <div class="wrap">
+    <div class="pathway-head reveal">
+      <div class="eyebrow dark">Notice Board</div>
+      <h2>What's happening this week.</h2>
+      <p>Notices are posted the moment our admin team sends them — no manual website updates needed.</p>
+    </div>
+    <div class="notice-grid reveal" id="noticeGrid">
+      <div class="notice-card"><span class="notice-pin" style="background:var(--maroon);"></span><span class="notice-tag urgent">Urgent</span><h4>Early Dismissal This Friday</h4><p>All campuses will close at 12:30 PM this Friday for the annual staff training session.</p><span class="notice-meta">Posted 2 hours ago</span></div>
+      <div class="notice-card"><span class="notice-pin" style="background:#8A6A22;"></span><span class="notice-tag circular">Circular</span><h4>Fee Submission Deadline</h4><p>Term 2 fee vouchers are due by July 31. Submit via bank challan or download above.</p><span class="notice-meta">Posted yesterday</span></div>
+      <div class="notice-card"><span class="notice-pin" style="background:#3F6B4A;"></span><span class="notice-tag event">Event</span><h4>Annual Sports Day — Save the Date</h4><p>Sports Day will be held August 15 at the Karachi campus. Parents are welcome to attend.</p><span class="notice-meta">Posted 3 days ago</span></div>
+      <div class="notice-card"><span class="notice-pin" style="background:#2C4270;"></span><span class="notice-tag holiday">Holiday</span><h4>Eid-ul-Adha Holidays Announced</h4><p>The school will remain closed for Eid holidays. Classes resume the following Monday.</p><span class="notice-meta">Posted 5 days ago</span></div>
+      <div class="notice-card"><span class="notice-pin" style="background:#6A3F7A;"></span><span class="notice-tag academic">Academic</span><h4>PTM Scheduled for Grades 6–8</h4><p>Parent-Teacher Meetings for Grades 6 to 8 will be held August 2 from 9 AM to 1 PM.</p><span class="notice-meta">Posted 1 week ago</span></div>
+      <div class="notice-card"><span class="notice-pin" style="background:var(--gold);"></span><span class="notice-tag circular">Circular</span><h4>New Uniform Vendor Approved</h4><p>Winter uniforms are now available through the approved vendor list shared with class reps.</p><span class="notice-meta">Posted 1 week ago</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="wave-divider" style="background:var(--paper-2);">
+  <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path d="M0,60 C240,10 480,90 720,60 C960,30 1200,80 1440,40 L1440,100 L0,100 Z" style="fill:var(--navy-2);"/></svg>
+</div>
+<section id="campus-life" class="campus-life" style="padding-top:60px;">
+  <div class="wrap">
+    <div class="pathway-head reveal">
+      <div class="eyebrow">Campus Facilities</div>
+      <h2>What the school day actually looks like.</h2>
+    </div>
+    <div class="feature-grid reveal">
+      <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg><h4>Smart Classrooms</h4><p>Interactive boards and a 1:1 device policy from Grade 6 onward.</p></div>
+      <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 3h6M10 3v6l-5.5 9.5A1 1 0 0 0 5.4 20h13.2a1 1 0 0 0 .9-1.5L14 9V3"/></svg><h4>Science &amp; STEM Labs</h4><p>Dedicated physics, chemistry, biology and robotics labs on every secondary campus.</p></div>
+      <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 21h8M12 17v4M7 4h10l-1 8a4 4 0 0 1-8 0L7 4Z"/><path d="M5 5H3v2a3 3 0 0 0 3 3M19 5h2v2a3 3 0 0 1-3 3"/></svg><h4>Sports Complex</h4><p>Football, cricket, swimming and athletics coaching under certified sports staff.</p></div>
+      <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1.2" fill="currentColor"/><circle cx="14" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="13" r="1.2" fill="currentColor"/><path d="M8 15a4 4 0 0 0 8 0"/></svg><h4>Arts &amp; Music Studio</h4><p>Weekly studio time in visual art, choir and instrumental music for every grade.</p></div>
+      <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v18H6.5A2.5 2.5 0 0 1 4 18.5v-13Z"/><path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H12v18h5.5a2.5 2.5 0 0 0 2.5-2.5v-13Z"/></svg><h4>Library &amp; Research Room</h4><p>A 12,000-volume library plus a quiet research room for senior students.</p></div>
+      <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-8-4.5-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.5-8 11-8 11a2 2 0 0 1-2 0Z"/></svg><h4>Counselling &amp; Wellbeing</h4><p>A full-time counsellor on every campus for academic and personal support.</p></div>
+    </div>
+  </div>
+</section>
+<div class="wave-divider" style="background:var(--navy-2);">
+  <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,50 L1440,100 L0,100 Z" style="fill:var(--paper);"/></svg>
+</div>
+
+<section id="testimonials" style="padding-top:60px;">
+  <div class="wrap">
+    <div class="pathway-head reveal">
+      <div class="eyebrow dark">From Our Community</div>
+      <h2>What parents say.</h2>
+    </div>
+    <div class="testimonial-grid reveal">
+      <div class="t-card"><p class="t-quote">"Our daughter's teachers know exactly where she struggles and where she shines — that kind of attention is rare at this scale."</p><div class="t-person"><svg class="avatar" viewBox="0 0 44 44"><rect width="44" height="44" fill="#EAEBE4"/><circle cx="22" cy="17" r="9" fill="#C68F5C"/><path d="M6 44c0-9 7-14 16-14s16 5 16 14Z" fill="#7A2331"/></svg><div class="who"><b>Sana R.</b><span>Parent, Grade 4</span></div></div></div>
+      <div class="t-card"><p class="t-quote">"The A-Level counselling made university applications far less stressful than I expected as a parent."</p><div class="t-person"><svg class="avatar" viewBox="0 0 44 44"><rect width="44" height="44" fill="#EAEBE4"/><circle cx="22" cy="17" r="9" fill="#EFC9A3"/><path d="M6 44c0-9 7-14 16-14s16 5 16 14Z" fill="#182746"/></svg><div class="who"><b>Imran F.</b><span>Parent, Intermediate</span></div></div></div>
+      <div class="t-card"><p class="t-quote">"He came home talking about his robotics project every single day for a month. That's when I knew the school had hooked him."</p><div class="t-person"><svg class="avatar" viewBox="0 0 44 44"><rect width="44" height="44" fill="#EAEBE4"/><circle cx="22" cy="17" r="9" fill="#8A5A38"/><path d="M6 44c0-9 7-14 16-14s16 5 16 14Z" fill="#B8923B"/></svg><div class="who"><b>Ayesha K.</b><span>Parent, Secondary</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="news" style="background:var(--paper-2);">
+  <div class="wrap">
+    <div class="pathway-head reveal">
+      <div class="eyebrow dark">News &amp; Achievements</div>
+      <h2>Recent milestones.</h2>
+    </div>
+    <div class="news-grid reveal">
+      <div class="news-card"><div class="news-meta"><span class="tag">Academics</span><span class="news-date">May 2026</span></div><h3>100% A-Level pass rate this session</h3><p>Every Crescent Heights A-Level candidate cleared their examinations, with a third achieving straight A grades across all subjects.</p><span class="read">Read more →</span></div>
+      <div class="news-card"><div class="news-meta"><span class="tag">Competition</span><span class="news-date">Mar 2026</span></div><h3>First place in Senior Robotics, Regional Science Fair</h3><p>Our Grade 11 robotics team took first place among 40 schools with an autonomous water-filtration prototype.</p><span class="read">Read more →</span></div>
+      <div class="news-card"><div class="news-meta"><span class="tag">Campus</span><span class="news-date">Jan 2026</span></div><h3>New STEM block opens on the Karachi campus</h3><p>A three-floor STEM block with dedicated robotics, chemistry and physics labs is now open to Secondary and Intermediate students.</p><span class="read">Read more →</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="admissions" class="admissions">
+  <div class="wrap adm-grid">
+    <div class="reveal">
+      <div class="eyebrow" style="color:#fff;">Admissions Open</div>
+      <h2>Admissions open for the 2026–27 session.</h2>
+      <p>Seats are limited across Early Years through Intermediate. Book a campus tour or send an inquiry — our admissions team responds within one business day.</p>
+    </div>
+    <div class="form-card reveal" id="formCard">
+      <div id="formDefault">
+        <h3>Send an admissions inquiry</h3>
+        <form id="inquiryForm">
+          <div class="field"><label for="parentName">Parent / Guardian Name</label><input type="text" id="parentName" required placeholder="e.g. Ayesha Khan"></div>
+          <div class="field"><label for="contact">Phone or Email</label><input type="text" id="contact" required placeholder="e.g. 0300-1234567"></div>
+          <div class="field"><label for="grade">Grade of Interest</label><select id="grade"><option>Early Years</option><option>Primary</option><option>Secondary</option><option>Intermediate</option></select></div>
+          <button type="submit" class="btn btn-primary">Send Inquiry</button>
+        </form>
+        <p class="form-note">This form is a front-end demo — no data is sent or stored.</p>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 6 9 17l-5-5"/></svg>
+        <h3>Thank you — we'll be in touch.</h3>
+        <p>Our admissions team typically responds within one business day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="foot-brand">
+        <div class="brand">
+          <svg width="34" height="34" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30 3 L54 12 V30 C54 44 44 53 30 57 C16 53 6 44 6 30 V12 Z" fill="#0D1730" stroke="#D9B968" stroke-width="1.5"/><text x="30" y="37" font-family="Fraunces, serif" font-size="20" font-weight="700" fill="#D9B968" text-anchor="middle">CH</text></svg>
+          <div class="brand-name" style="color:#fff;">Crescent Heights<span style="color:rgba(244,245,240,0.5);">Academy</span></div>
+        </div>
+        <p>Nursery to A-Levels across three campuses in Pakistan, building character alongside curriculum since 1994.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M15 4h-2a4 4 0 0 0-4 4v3H7v4h2v6h4v-6h3l1-4h-4V8a1 1 0 0 1 1-1h3Z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.5" y="5.5" width="19" height="13" rx="3"/><path d="M10 9.5v5l4.5-2.5Z" fill="currentColor" stroke="none"/></svg></a>
+        </div>
+      </div>
+      <div><h5>Quick Links</h5><ul><li><a href="#about">About Us</a></li><li><a href="#academics">Academics</a></li><li><a href="#notices">Notice Board</a></li><li><a href="#gallery">Campus Life</a></li><li><a href="#admissions">Admissions</a></li></ul></div>
+      <div><h5>Campuses</h5><ul><li>Karachi — Clifton Block 5</li><li>Lahore — Gulberg III</li><li>Islamabad — F-10 Markaz</li></ul></div>
+      <div><h5>Contact</h5><ul><li>+92 (21) 111-000-456</li><li>admissions@crescentheights.edu.pk</li><li>Mon–Fri, 8am–3pm</li></ul></div>
+    </div>
+    <div class="bottom-bar">
+      <span>© 2026 Crescent Heights Academy. All rights reserved.</span>
+      <div class="bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><span>Site design &amp; development by Kinzah</span></div>
+    </div>
+  </div>
+</footer>
+
+<a class="whatsapp-float" href="https://wa.me/923001234567?text=Hi%20Crescent%20Heights%2C%20I%20have%20a%20question" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2.1 3.2 5 4.4.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3Z"/><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>
+</a>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.269/legacy/build/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 10); });
+
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    burger.setAttribute('aria-expanded', false);
+  }));
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('in-view'); io.unobserve(entry.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  const counters = document.querySelectorAll('[data-count]');
+  let countersStarted = false;
+  function animateCounters(){
+    if (countersStarted) return;
+    countersStarted = true;
+    counters.forEach(el => {
+      const target = parseInt(el.getAttribute('data-count'), 10);
+      const duration = 1100;
+      const start = performance.now();
+      function tick(now){
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target);
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { animateCounters(); statObserver.disconnect(); } });
+  }, { threshold: 0.4 });
+  statObserver.observe(document.querySelector('.stat-row'));
+
+  const form = document.getElementById('inquiryForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    document.getElementById('formDefault').style.display = 'none';
+    document.getElementById('formSuccess').classList.add('show');
+  });
+
+  /* ---------- LIVE DATA CONFIG ----------
+     Paste the Google Apps Script Web App URL here after deploying Code.gs
+     (see /apps-script/Code.gs and the SETUP.md guide). Until you do, the site
+     runs fine on a generated demo challan sheet. */
+  const SHEETS_WEBAPP_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function timeAgo(iso){
+    try{
+      const diffMs = Date.now() - new Date(iso).getTime();
+      const mins = Math.floor(diffMs/60000);
+      if (mins < 60) return `Posted ${Math.max(mins,1)} min${mins===1?'':'s'} ago`;
+      const hrs = Math.floor(mins/60);
+      if (hrs < 24) return `Posted ${hrs} hour${hrs===1?'':'s'} ago`;
+      const days = Math.floor(hrs/24);
+      return `Posted ${days} day${days===1?'':'s'} ago`;
+    } catch(e){ return ''; }
+  }
+  function renderNotices(notices){
+    if (!notices || !notices.length) return; // keep the sample cards already in the HTML
+    const tagClasses = ['urgent','circular','event','holiday','academic'];
+    const pinColors = { urgent:'var(--maroon)', circular:'#8A6A22', event:'#3F6B4A', holiday:'#2C4270', academic:'#6A3F7A' };
+    const grid = document.getElementById('noticeGrid');
+    grid.innerHTML = notices.map(n => {
+      const tagKey = tagClasses.includes(String(n.tag).toLowerCase()) ? String(n.tag).toLowerCase() : 'circular';
+      return `<div class="notice-card">
+        <span class="notice-pin" style="background:${pinColors[tagKey]};"></span>
+        <span class="notice-tag ${tagKey}">${escapeHtml(n.tag)}</span>
+        <h4>${escapeHtml(n.title)}</h4>
+        <p>${escapeHtml(n.body)}</p>
+        <span class="notice-meta">${timeAgo(n.timestamp)}</span>
+      </div>`;
+    }).join('');
+  }
+
+  async function loadLiveData(){
+    if (!SHEETS_WEBAPP_URL || SHEETS_WEBAPP_URL.indexOf('PASTE_YOUR') === 0) return; // backend not connected yet
+    try {
+      const res = await fetch(SHEETS_WEBAPP_URL);
+      const data = await res.json();
+      if (data.notices) renderNotices(data.notices);
+    } catch (err) {
+      console.log('Live data not reachable yet, using demo data instead.', err);
+    }
+  }
+  loadLiveData();
+
+  /* ---------- FEE CHALLAN SEARCH (search inside a PDF, by student name) ---------- */
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.269/legacy/build/pdf.worker.min.js";
+
+  const voucherForm = document.getElementById('voucherForm');
+  const voucherInput = document.getElementById('voucherInput');
+  const voucherResultWrap = document.getElementById('voucherResultWrap');
+
+  let cachedPdfBytes = null;   // Uint8Array of whichever PDF (live or demo) is currently loaded
+  let cachedPdfDoc = null;     // pdf.js document object
+  let cachedPageTexts = null;  // array of normalized page text, same order as pages
+  let usingLiveChallan = false;
+
+  /** Builds a small in-memory demo challan sheet with jsPDF, purely so the search
+      feature works out of the box before the WhatsApp/Sheets backend is connected. */
+  function generateDemoPdfBytes(){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit:'pt', format:'a4' });
+    doc.setFillColor(16,27,51);
+    doc.rect(0,0,595,70,'F');
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','bold'); doc.setFontSize(16);
+    doc.text('Crescent Heights Academy — Fee Challan Sheet (Demo)', 40, 42);
+    doc.setTextColor(30,30,30);
+    const headers = ['Voucher No.','Student Name','Class','Amount','Due Date','Status'];
+    const colX =    [40,          115,            300,     395,     460,       520];
+    const rows = [
+      ['PV02968206','Kinza Shabbir Arain','Grade 7 - B','Rs. 8,500','31 Jul 26','Unpaid'],
+      ['PV01947733','Hamza Sheikh','Grade 3 - A','Rs. 7,200','31 Jul 26','Paid'],
+      ['PV03812256','Zoya Farooq','Intermediate','Rs. 12,000','15 Jul 26','Overdue'],
+      ['PV04521190','Ahmed Raza','Grade 5 - C','Rs. 6,800','31 Jul 26','Paid'],
+      ['PV05633281','Mahnoor Iqbal','Grade 9 - A','Rs. 9,300','31 Jul 26','Unpaid']
+    ];
+    let y = 100;
+    doc.setFont('helvetica','bold'); doc.setFontSize(10);
+    headers.forEach((h,i)=>doc.text(h, colX[i], y));
+    y += 6; doc.setDrawColor(184,146,59); doc.line(40,y,560,y); y += 18;
+    doc.setFont('helvetica','normal'); doc.setFontSize(9.5);
+    rows.forEach(r => {
+      r.forEach((val,i)=>doc.text(String(val), colX[i], y));
+      y += 24;
+    });
+    doc.setFontSize(8.5); doc.setTextColor(120,120,120);
+    doc.text('Demo data — this whole sheet is generated locally so the search box works before the real backend is connected.', 40, y+20);
+    return new Uint8Array(doc.output('arraybuffer'));
+  }
+
+  async function fetchLiveChallanBase64(){
+    if (!SHEETS_WEBAPP_URL || SHEETS_WEBAPP_URL.indexOf('PASTE_YOUR') === 0) return null;
+    try {
+      const res = await fetch(SHEETS_WEBAPP_URL + '?resource=challanPdf');
+      const data = await res.json();
+      return data.challanPdfBase64 || null;
+    } catch (err) {
+      console.log('Could not fetch the live challan sheet, using demo data instead.', err);
+      return null;
+    }
+  }
+  function base64ToUint8Array(base64){
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return bytes;
+  }
+
+  /** Loads (once per page view) whichever challan PDF is available, live sheet preferred. */
+  async function ensurePdfLoaded(){
+    if (cachedPdfDoc) return;
+    const liveB64 = await fetchLiveChallanBase64();
+    cachedPdfBytes = liveB64 ? base64ToUint8Array(liveB64) : generateDemoPdfBytes();
+    usingLiveChallan = !!liveB64;
+    cachedPdfDoc = await pdfjsLib.getDocument({ data: cachedPdfBytes.slice() }).promise;
+    cachedPageTexts = [];
+    for (let i = 1; i <= cachedPdfDoc.numPages; i++) {
+      const page = await cachedPdfDoc.getPage(i);
+      const content = await page.getTextContent();
+      const text = content.items.map(it => it.str).join(' ').replace(/\s+/g, ' ').trim();
+      cachedPageTexts.push(text);
+    }
+  }
+
+  function findMatchingPages(query){
+    const q = query.replace(/\s+/g, ' ').trim().toUpperCase();
+    const matches = [];
+    cachedPageTexts.forEach((text, idx) => { if (text.toUpperCase().includes(q)) matches.push(idx + 1); });
+    return matches;
+  }
+
+  async function renderPageToCanvas(pageNumber, canvas){
+    const page = await cachedPdfDoc.getPage(pageNumber);
+    const viewport = page.getViewport({ scale: 1.3 });
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    const ctx = canvas.getContext('2d');
+    await page.render({ canvasContext: ctx, viewport }).promise;
+  }
+
+  async function downloadMatchingPages(pageNumbers, nameForFilename){
+    const { PDFDocument } = PDFLib;
+    const srcDoc = await PDFDocument.load(cachedPdfBytes.slice());
+    const newDoc = await PDFDocument.create();
+    const copied = await newDoc.copyPages(srcDoc, pageNumbers.map(n => n - 1));
+    copied.forEach(p => newDoc.addPage(p));
+    const bytes = await newDoc.save();
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = (nameForFilename || 'challan').replace(/\s+/g, '-') + '-challan.pdf';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  }
+
+  voucherForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const query = voucherInput.value.trim();
+    voucherResultWrap.classList.add('show');
+    if (!query) {
+      voucherResultWrap.innerHTML = `<div class="voucher-not-found">Please type your child's full name.</div>`;
+      return;
+    }
+    voucherResultWrap.innerHTML = `<div class="voucher-not-found">Searching…</div>`;
+    try {
+      await ensurePdfLoaded();
+    } catch (err) {
+      voucherResultWrap.innerHTML = `<div class="voucher-not-found">Couldn't load the challan sheet right now. Please try again shortly.</div>`;
+      return;
+    }
+    const matches = findMatchingPages(query);
+    if (!matches.length) {
+      voucherResultWrap.innerHTML = `<div class="voucher-not-found">No record found for <b>${escapeHtml(query)}</b>. Please check the spelling or contact the school office.${usingLiveChallan ? '' : ' <span class="voucher-demo-note">(Demo sheet — try "Kinza Shabbir Arain", "Hamza Sheikh" or "Zoya Farooq")</span>'}</div>`;
+      return;
+    }
+    voucherResultWrap.innerHTML = `
+      <div class="voucher-card">
+        <div class="voucher-preview"><canvas id="voucherCanvas"></canvas></div>
+        <div class="voucher-actions">
+          <div class="voucher-found-label">Found: <b>${escapeHtml(query)}</b>${matches.length > 1 ? ` <span class="voucher-pages-note">(pages ${matches.join(', ')})</span>` : ''}</div>
+          <button class="btn btn-primary btn-sm" id="downloadChallanBtn">Download PDF</button>
+          ${!usingLiveChallan ? '<span class="voucher-demo-note">Showing the generated demo sheet — connect the backend to search a real upload.</span>' : ''}
+        </div>
+      </div>`;
+    await renderPageToCanvas(matches[0], document.getElementById('voucherCanvas'));
+    document.getElementById('downloadChallanBtn').addEventListener('click', () => downloadMatchingPages(matches, query));
+  });
+</script>
+
+
+</body>
+</html>
