@@ -657,7 +657,7 @@
 
   async function loadLiveData(){
     if (!SHEETS_WEBAPP_URL || SHEETS_WEBAPP_URL.indexOf('https://script.google.com/macros/s/AKfycbzDmZyRGxyhwiiNNDjCEYkgRU0laXILeH3NXbeJm2wmGvlHFM2aa6WCBevyJvYvHnwc/exec') === 0) return; // backend not connected yet
-    try {
+  } try {
       const res = await fetch(SHEETS_WEBAPP_URL);
       const data = await res.json();
       if (data.notices) renderNotices(data.notices);
