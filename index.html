@@ -714,7 +714,7 @@
   }
 
   async function fetchLiveChallanBase64(){
-    if (!SHEETS_WEBAPP_URL || SHEETS_WEBAPP_URL.indexOf('https://script.google.com/macros/s/AKfycbxD_3ClqxGRHLWwLyAH3mVn7I5jHSrjU3RgTVz3X51_nLEefABdUUKLwaLt_456lFQ/exec') === 0) return null;
+    if (!SHEETS_WEBAPP_URL || SHEETS_WEBAPP_URL.indexOf('https://script.google.com/macros/s/AKfycbzDmZyRGxyhwiiNNDjCEYkgRU0laXILeH3NXbeJm2wmGvlHFM2aa6WCBevyJvYvHnwc/exec') === 0) return null;
     try {
       const res = await fetch(SHEETS_WEBAPP_URL + '?resource=challanPdf');
       const data = await res.json();
