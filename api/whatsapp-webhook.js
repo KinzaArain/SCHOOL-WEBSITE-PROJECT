@@ -30,7 +30,7 @@ const PHONE_NUMBER_ID = process.env.META_PHONE_NUMBER_ID;
 const SHEETS_WEBAPP_URL = process.env.SHEETS_WEBAPP_URL;
 const SHEETS_SECRET = process.env.SHEETS_SHARED_SECRET;
 const ADMIN_NUMBER = (process.env.ADMIN_WHATSAPP_NUMBER || '').replace(/\D/g, '');
-const GRAPH_VERSION = 'v20.0';
+const GRAPH_VERSION = 'v26.0';
 const MAX_PDF_MB = 15; // soft warning threshold; Apps Script + base64 overhead get uncomfortable well beyond this
 
 module.exports = async (req, res) => {
