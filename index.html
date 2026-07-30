@@ -622,7 +622,7 @@
      Paste the Google Apps Script Web App URL here after deploying Code.gs
      (see /apps-script/Code.gs and the SETUP.md guide). Until you do, the site
      runs fine on a generated demo challan sheet. */
-  const SHEETS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzDmZyRGxyhwiiNNDjCEYkgRU0laXILeH3NXbeJm2wmGvlHFM2aa6WCBevyJvYvHnwc/exec";
+  const SHEETS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyhySDqd1b-WLp_IbpE01YTIY47EEwLHuhgXX9yO_THk4Ul_ph7gg8iOP_6k7BdOgcv/exec";
 
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -656,7 +656,7 @@
   }
 
   async function loadLiveData(){
-    if (!SHEETS_WEBAPP_URL || SHEETS_WEBAPP_URL.indexOf('https://script.google.com/macros/s/AKfycbzDmZyRGxyhwiiNNDjCEYkgRU0laXILeH3NXbeJm2wmGvlHFM2aa6WCBevyJvYvHnwc/exec') === 0) return; // backend not connected yet
+    if (!SHEETS_WEBAPP_URL || SHEETS_WEBAPP_URL.indexOf('https://script.google.com/macros/s/AKfycbyhySDqd1b-WLp_IbpE01YTIY47EEwLHuhgXX9yO_THk4Ul_ph7gg8iOP_6k7BdOgcv/exec') === 0) return; // backend not connected yet
    try {
       const res = await fetch(SHEETS_WEBAPP_URL);
       const data = await res.json();
@@ -714,7 +714,7 @@
   }
 
   async function fetchLiveChallanBase64(){
-    if (!SHEETS_WEBAPP_URL || SHEETS_WEBAPP_URL.indexOf('https://script.google.com/macros/s/AKfycbzDmZyRGxyhwiiNNDjCEYkgRU0laXILeH3NXbeJm2wmGvlHFM2aa6WCBevyJvYvHnwc/exec') === 0) return null;
+    if (!SHEETS_WEBAPP_URL || SHEETS_WEBAPP_URL.indexOf('https://script.google.com/macros/s/AKfycbyhySDqd1b-WLp_IbpE01YTIY47EEwLHuhgXX9yO_THk4Ul_ph7gg8iOP_6k7BdOgcv/exec') === 0) return null;
     try {
       const res = await fetch(SHEETS_WEBAPP_URL + '?resource=challanPdf');
       const data = await res.json();
