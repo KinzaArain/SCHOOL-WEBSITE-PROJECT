@@ -79,18 +79,32 @@ async function handleIncoming(req, res) {
 }
 
 async function handleTextMessage(text, fromNumber) {
-  const parts = text.split('|').map(s => s.trim());
-  if (parts[0].toUpperCase() !== 'NOTICE' || parts.length < 4) {
-    await sendWhatsAppText(fromNumber,
-      'Couldn\'t read that as a notice.\n\nFormat:\nNOTICE | Tag | Title | Body\n\nExample:\nNOTICE | Urgent | Early Dismissal Friday | All campuses close at 12:30 PM this Friday.\n\nTags: Urgent, Circular, Event, Holiday, Academic');
-    return;
+  if (!text || !SHEETS_WEBAPP_URL) return;
+
+  console.log(`Forwarding text notice to Google Sheet: "${text}"`);
+
+  try {
+    const response = await fetch(SHEETS_WEBAPP_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        secret: SHEETS_SECRET,
+        action: 'addNotice',
+        tag: 'General',
+        title: 'WhatsApp Notice',
+        body: text,
+        sender: fromNumber,
+      }),
+    });
+
+    console.log("Google Apps Script Status:", response.status);
+
+    if (typeof sendWhatsAppText === 'function') {
+      await sendWhatsAppText(fromNumber, "Notice posted successfully!");
+    }
+  } catch (error) {
+    console.error("Error forwarding text to Google Sheet:", error);
   }
-  const [, tag, title, ...bodyParts] = parts;
-  const body = bodyParts.join(' | ');
-  const result = await postToSheet({ action: 'addNotice', tag, title, body });
-  await sendWhatsAppText(fromNumber, result.ok
-    ? `✅ Notice posted: "${title}"`
-    : `⚠️ Couldn't save the notice: ${result.error || 'unknown error'}`);
 }
 async function handleDocumentMessage(doc, fromNumber) {
   const caption = (doc.caption || '').toUpperCase();
